@@ -88,4 +88,21 @@ RSpec.describe TwitterTimelineHub do
       expect(result.tweets).to be_empty
     end
   end
+
+  context 'when the unauthorized error refers to an invalid token' do
+    it 'fails' do
+      twitter_client = instance_double(Twitter::REST::Client)
+      allow(twitter_client).to receive(:user_timeline)
+        .with('screen_name', count: 5)
+        .once {
+          fail Twitter::Error::Unauthorized, 'Invalid or expired token'
+        }
+
+      twitter_timeline_hub = TwitterTimelineHub.new(twitter_client)
+
+      expect { twitter_timeline_hub.call('screen_name', count: 5) }.to(
+        raise_error(Twitter::Error::Unauthorized)
+      )
+    end
+  end
 end

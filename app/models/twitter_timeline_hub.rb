@@ -10,7 +10,9 @@ class TwitterTimelineHub
     Result.new(:ok, tweets)
   rescue Twitter::Error::NotFound
     Result.new(:not_found, [])
-  rescue Twitter::Error::Unauthorized
+  rescue Twitter::Error::Unauthorized => e
+    raise if e.message =~ /Invalid or expired token/
+
     Result.new(:forbidden, [])
   end
 
