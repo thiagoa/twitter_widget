@@ -10,6 +10,7 @@ gem 'rubocop', require: false
 gem 'webpack-rails'
 gem 'foreman'
 gem 'sidekiq'
+gem 'twitter', '~> 5.16.0'
 
 group :development do
   gem "spring"
