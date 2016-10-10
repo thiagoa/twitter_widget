@@ -8,6 +8,10 @@ class TwitterTimelineHub
   def call(user, count: 20)
     tweets = fetch_user_timeline(user, count: count)
     Result.new(:ok, tweets)
+  rescue Twitter::Error::NotFound
+    Result.new(:not_found, [])
+  rescue Twitter::Error::Unauthorized
+    Result.new(:forbidden, [])
   end
 
   private

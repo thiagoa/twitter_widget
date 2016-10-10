@@ -58,4 +58,34 @@ RSpec.describe TwitterTimelineHub do
       )
     end
   end
+
+  context 'when the timeline is not found' do
+    it 'returns a result with no tweets and not_found status' do
+      twitter_client = instance_double(Twitter::REST::Client)
+      allow(twitter_client).to receive(:user_timeline)
+        .with('screen_name', count: 5)
+        .once { fail Twitter::Error::NotFound }
+
+      twitter_hub = TwitterTimelineHub.new(twitter_client)
+      result = twitter_hub.call('screen_name', count: 5)
+
+      expect(result.status).to eq :not_found
+      expect(result.tweets).to be_empty
+    end
+  end
+
+  context 'when the timeline is forbidden' do
+    it 'returns a result with no tweets and forbidden status' do
+      twitter_client = double('twitter_client')
+      allow(twitter_client).to receive(:user_timeline)
+        .with('screen_name', count: 5)
+        .once { fail Twitter::Error::Unauthorized }
+
+      twitter_timeline_hub = TwitterTimelineHub.new(twitter_client)
+      result = twitter_timeline_hub.call('screen_name', count: 5)
+
+      expect(result.status).to eq :forbidden
+      expect(result.tweets).to be_empty
+    end
+  end
 end
