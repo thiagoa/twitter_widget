@@ -17,4 +17,45 @@ RSpec.describe TwitterTimelineHub do
         .once
     end
   end
+
+  def build_tweet_double(user_name:, mention_name:, text:, created_at:)
+    user = instance_double(Twitter::User, screen_name: user_name)
+    mention = instance_double(
+      Twitter::Entity::UserMention,
+      screen_name: mention_name
+    )
+    instance_double(
+      Twitter::Tweet,
+      user: user,
+      text: text,
+      user_mentions: [mention],
+      created_at: created_at
+    )
+  end
+
+  context 'when the timeline is found' do
+    it 'returns a result object with tweets and an ok status' do
+      twitter_client = instance_double(Twitter::REST::Client)
+      tweet = build_tweet_double(
+        user_name: 'thiagoaraujos',
+        text: 'Foo @bar',
+        mention_name: 'bar',
+        created_at: Date.new(2016, 1, 1)
+      )
+      allow(twitter_client).to receive(:user_timeline).and_return([tweet])
+      twitter_timeline_hub = TwitterTimelineHub.new(twitter_client)
+
+      result = twitter_timeline_hub.call('foo')
+
+      expect(result.status).to eq :ok
+      expect(result.tweets).to eq(
+        [
+          screen_name: 'thiagoaraujos',
+          text: 'Foo @bar',
+          mentions: ['bar'],
+          created_at: Date.new(2016, 1, 1)
+        ]
+      )
+    end
+  end
 end
