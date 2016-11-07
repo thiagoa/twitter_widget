@@ -24,20 +24,20 @@ RSpec.describe TwitterClientFactory do
 
   context 'when config is not passed' do
     before do
-      @consumer_key_backup = ENV['TWITTER_KEY']
-      @consumer_secret_backup = ENV['TWITTER_SECRET']
+      @consumer_key_backup = ENV['TWITTER_CONSUMER_KEY']
+      @consumer_secret_backup = ENV['TWITTER_CONSUMER_SECRET']
       @access_token_backup = ENV['TWITTER_ACCESS_TOKEN']
       @access_token_secret_backup = ENV['TWITTER_ACCESS_TOKEN_SECRET']
 
-      ENV['TWITTER_KEY'] = 'ck'
-      ENV['TWITTER_SECRET'] = 'cs'
+      ENV['TWITTER_CONSUMER_KEY'] = 'ck'
+      ENV['TWITTER_CONSUMER_SECRET'] = 'cs'
       ENV['TWITTER_ACCESS_TOKEN'] = 'at'
       ENV['TWITTER_ACCESS_TOKEN_SECRET'] = 'ats'
     end
 
     after do
-      ENV['TWITTER_KEY'] = @consumer_key_backup
-      ENV['TWITTER_SECRET'] = @consumer_secret_backup
+      ENV['TWITTER_CONSUMER_KEY'] = @consumer_key_backup
+      ENV['TWITTER_CONSUMER_SECRET'] = @consumer_secret_backup
       ENV['TWITTER_ACCESS_TOKEN'] = @access_token_backup
       ENV['TWITTER_ACCESS_TOKEN_SECRET'] = @access_token_secret_backup
     end
