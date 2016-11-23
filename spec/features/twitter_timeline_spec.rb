@@ -13,4 +13,3 @@ RSpec.feature 'twitter timeline' do
     end
   end
 end
-

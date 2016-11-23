@@ -4,7 +4,7 @@ require_relative '../../app/models/twitter_timeline_hub'
 
 RSpec.describe TwitterTimelineHub do
   describe '#call' do
-    it 'collaborates with twitter_client to get a timeline and delivers a result struct' do
+    it 'collaborates with twitter_client to deliver a result struct' do
       twitter_client = instance_double(Twitter::REST::Client)
       allow(twitter_client).to receive(:user_timeline).and_return([])
       twitter_hub = TwitterTimelineHub.new(twitter_client)
@@ -18,6 +18,7 @@ RSpec.describe TwitterTimelineHub do
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def build_tweet_double(user_name:, mention_name:, text:, created_at:)
     user = instance_double(Twitter::User, screen_name: user_name)
     mention = instance_double(
