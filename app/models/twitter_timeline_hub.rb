@@ -1,7 +1,7 @@
 class TwitterTimelineHub
   Result = Struct.new(:status, :tweets)
 
-  def initialize(twitter_client)
+  def initialize(twitter_client = TwitterClientFactory.new.call)
     @twitter_client = twitter_client
   end
 
