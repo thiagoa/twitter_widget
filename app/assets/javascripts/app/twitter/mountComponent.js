@@ -1,8 +1,16 @@
+import renderOneTweet from 'app/twitter/renderOneTweet';
+import fetchTimeline from 'app/twitter/fetchTimeline';
+
 export default function mountComponent(opts) {
   const containerNode = opts.containerNode;
 
-  containerNode.innerHTML = `
-    <div class="tweet"><p>Hi @dude!</p></div>
-    <div class="tweet"><p>Pizza!</p></div>
-  `;
+  function renderTweets(response) {
+    const html = response
+      .tweets
+      .map(tweet => renderOneTweet(tweet));
+
+    containerNode.innerHTML = html;
+  }
+
+  fetchTimeline('thiagoaraujos').then(renderTweets);
 }

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
 import mountComponent from 'app/twitter/mountComponent';
+import createFakeTimelineServer from '../../support/createFakeTimelineServer';
 import createFixture from '../../support/createFixture';
 
 describe('mountComponent', () => {
@@ -9,7 +9,7 @@ describe('mountComponent', () => {
 
   beforeEach(() => {
     fixture = createFixture({ html: '<div data-js-tweets></div>' });
-    server = sinon.fakeServer.create();
+    server = createFakeTimelineServer();
   });
 
   afterEach(() => {
@@ -17,7 +17,7 @@ describe('mountComponent', () => {
     server.restore();
   });
 
-  const serverResponse = JSON.stringify({
+  const responseBody = {
     status: 'ok',
     tweets: [
       {
@@ -31,16 +31,12 @@ describe('mountComponent', () => {
         mentions: [],
       },
     ],
-  });
+  };
 
   it('renders an initial timeline', (done) => {
-    server.respondWith('GET', '/twitter_timeline/thiagoaraujos', [
-      200, { 'Content-Type': 'application/json' }, serverResponse,
-    ]);
+    server.stubGet('/twitter_timeline/thiagoaraujos', { status: 200, body: responseBody });
 
     mountComponent({ containerNode: fixture });
-
-    server.respond();
 
     setTimeout(() => {
       const tweets = fixture.querySelectorAll('.tweet > p');
