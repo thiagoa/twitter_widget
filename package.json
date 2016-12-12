@@ -11,6 +11,7 @@
     "babel-register": "^6.8.0",
     "imports-loader": "^0.6.5",
     "jquery": "^3.1.1",
+    "lodash": "^4.17.2",
     "stats-webpack-plugin": "^0.2.1",
     "webpack": "^1.9.11",
     "webpack-dev-server": "^1.9.0"

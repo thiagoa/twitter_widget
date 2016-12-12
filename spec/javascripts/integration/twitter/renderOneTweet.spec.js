@@ -9,7 +9,7 @@ describe('renderOneTweet', () => {
   afterEach(() => { fixture.remove(); });
 
   it('transforms a tweet object into an HTML string', () => {
-    const tweet = { created_at: '2016-01-01', text: 'Hi!' };
+    const tweet = { created_at: '2016-01-01', text: '<p>Hi!</p>' };
 
     fixture.innerHTML = renderOneTweet(tweet);
 
