@@ -25,3 +25,7 @@ We currently use the following buildpacks:
 Please be sure to configure these buildpacks in the same sequence
 presented here in both staging and production, or else the deploy will
 not work.
+## Running locally
+1. start a redis-server
+2. start the app with `foreman start`
+3. visit localhost:3000
